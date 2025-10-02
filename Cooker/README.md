@@ -6,8 +6,8 @@ Food is important. Scientific consesus suggests that cooking was an evolutionary
 Since I am a proud decendant of those same humans that made our brains bigger by cooking, I decided to pay an homage to my ancestors by creating a uniquely designed cooker.
 
 
-This project consist of two STM32 Black Pill microcontrollers boards which communicate via HC05 Bluetooth modules. One is equipeed with and LCD screen and the other with temperature sensor.
-in the final version of this project the microcontroller with temp. sensor will also be connected to an electric circuit of an induction heater through a relay switch: this enables the microcontroller to regulate the temperature of the heater by measuring it an turning of the circuit if it is too high.
+This project consists of two STM32 Black Pill microcontrollers boards which communicate via HC05 Bluetooth modules. One is equiped with and LCD screen and the other with temperature sensor.
+in the final version of this project the microcontroller with temp. sensor will also be connected to an electric circuit of an induction heater through a relay switch: this enables the microcontroller to regulate the temperature of the heater by measuring it an turning off the circuit if it is too high.
 
 Assembling of the cooker can be divided into four segments:
 * Bluetooth communication using UART protocol
