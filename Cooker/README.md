@@ -18,9 +18,9 @@ Assembling of the cooker can be divided into four segments:
 To give an initial impression of the project, the video at the beginning of this readme shows an early prototype. It consists of two Black Pill boards communicating with UART protocol.
 The workflow goes something like this:
 * The first Black pill, outfitted with and LCD screen and three buttons, prompts the user to insert the desired time interval
-* User presses the buttons to input the desired time interval. The nearest button increases the interval by 10 seconds, and the middle buttons confirms the value. The farthest button decreases the value of interval by 10 seconds.
+* User presses the buttons to input the desired time interval. The nearest button increases the interval by 10 seconds, and the middle button confirms the value. The farthest button decreases the value of interval by 10 seconds.
 * Countdown begins. Temperature detected by the sensor from the other Black Pill is also displayed.
-* After the countdown screen displays a message signaling that the process is finished.
+* After the countdown screen displays a message signalling that the process is finished.
 
 In this video I hold the sensor in my hand to showcase the project's ability to use temp. readings and change certain values accordingly. In this example, the blue LED lights up if the detected temp. is above 30 degrees celsius.
 
