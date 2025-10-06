@@ -12,7 +12,7 @@ The configuration is done as follows:
 * connect the RX and TX pins of HC05 and Arduino board
 * open the Serial Monitor and select the "Both NL and CR" and "38400 Baud" options
 
-![](./ARD+HC05.jpg)
+![HC05 connected to Arduino](./ARD+HC05.jpg)
 
 The datasheet of HC05 lists all of the recognized commands as well as expected responses, but only few of them are essential to set up the module. Below is a list of those commands and expected responses:
 
@@ -26,4 +26,4 @@ In my case the baud rate only applies to the configuration mode, while in the st
 
 To enable communication between two HC05 modules, one must be set up as a master, and one as a slave. This is done by sending the command "AT+ROLE=x", where x is 1 for the master, and 0 for slave.
 
-![](./HC05_MASTER_SLAVE.png)
+![Arduino IDE Serial Monitor](./HC05_MASTER_SLAVE.png)
