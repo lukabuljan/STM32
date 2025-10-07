@@ -26,4 +26,6 @@ In my case the baud rate only applies to the configuration mode, while in the st
 
 To enable communication between two HC05 modules, one must be set up as a master, and one as a slave. This is done by sending the command "AT+ROLE=x", where x is 1 for the master, and 0 for slave.
 
-![Arduino IDE Serial Monitor](./HC05_MASTER_SLAVE.png)
+![Arduino IDE Serial Monitor](./HC05_MASTER_SLAVE.png "Arduino IDE Serial Monitor")
+
+![schematic](./HC05_Arduino.png "Schematic view of connections")

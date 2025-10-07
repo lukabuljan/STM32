@@ -25,3 +25,5 @@ The workflow goes something like this:
 In this video I hold the sensor in my hand to showcase the project's ability to use temp. readings and change certain values accordingly. In this example, the blue LED lights up if the detected temp. is above 30 degrees celsius.
 
 This project is in its earliest stages of development and is under construction. Updates soon to follow.
+
+![First Circuit](STM32_Cooker1.png "Schematic of the first Black Pill Circuit")
