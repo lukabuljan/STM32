@@ -30,6 +30,8 @@ To enable communication between two HC05 modules, one must be set up as a master
 
 ![schematic](./HC05_Arduino.png "Schematic view of connections")
 
+
+##main.c
 ```C
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
@@ -40,4 +42,65 @@ To enable communication between two HC05 modules, one must be set up as a master
 /* USER CODE BEGIN Includes */
 #include "stm32f4xx_it.h"
 /* USER CODE END Includes */
+
+/* USER CODE BEGIN PV */
+uint8_t rxData;
+/* USER CODE END PV */
+
+/* Private function prototypes -----------------------------------------------*/
+void SystemClock_Config(void);
+/* USER CODE BEGIN PFP */
+
+int main(void)
+{
+
+  /* MCU Configuration--------------------------------------------------------*/
+
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+  HAL_Init();
+
+  /* Configure the system clock */
+  SystemClock_Config();
+
+  /* Initialize all configured peripherals */
+  MX_GPIO_Init();
+  MX_USART1_UART_Init();
+
+  /* USER CODE BEGIN 2 */
+  HAL_UART_Receive_IT(&huart1, &rxData, sizeof(rxData));
+  /* USER CODE END 2 */
+
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
+  while (1)
+  {
+    /* USER CODE END WHILE */
+
+    /* USER CODE BEGIN 3 */
+  }
+  /* USER CODE END 3 */
+}
+```
+
+##main.h
+```C
+/* USER CODE BEGIN Includes */
+extern uint8_t rxData;
+/* USER CODE END Includes */
+```
+
+##stm32f4xx_it.c
+```C
+/* Includes ------------------------------------------------------------------*/
+#include "main.h"
+#include "stm32f4xx_it.h"
+
+/* USER CODE BEGIN 1 */
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, rxData);
+
+	HAL_UART_Receive_IT(&huart1, &rxData, sizeof(rxData));
+}
+/* USER CODE END 1 */
 ```
