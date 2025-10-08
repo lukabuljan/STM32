@@ -31,7 +31,17 @@ To enable communication between two HC05 modules, one must be set up as a master
 ![schematic](./HC05_Arduino.png "Schematic view of connections")
 
 
-## main.c
+## Testing
+The easiest way to check if everything works as intended is to connect to the module via Bluetooth app on a cell phone and see how Black Pill reacts to different data. I used +ime appa+, tweaked the settings to show and send HEX data to send 1 byte at a time.
+On the programming side of things, I came up with a simple code so that the blue LED on the board switches on or off depending on the input. Before uploading the code to the board, it is neccessary to adjust a few settings in STM32 Cube MX:
+* System Core -> SYS -> Debug: Serial Wire
+* Connectivity -> USART1 -> Asynchronous -> Parameter settings -> Baud rate: 9600, Size: 8 bits (including parity), Parity bit: none
+						 				 -> NVIC Settings -> Enable USART interrupt
+* On Pinout View, select PC13 as GPIO_Output
+
+![Pinout View](./blink_pinout_view.png "Pinout View")
+
+### main.c
 ```C
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
@@ -82,14 +92,14 @@ int main(void)
 }
 ```
 
-## main.h
+### main.h
 ```C
 /* USER CODE BEGIN Includes */
 extern uint8_t rxData;
 /* USER CODE END Includes */
 ```
 
-## stm32f4xx_it.c
+### stm32f4xx_it.c
 ```C
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
