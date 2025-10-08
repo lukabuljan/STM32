@@ -1,4 +1,4 @@
-#HC05
+# HC05
 
 This module is one of the more obvious choices for bluetooth communications. Thanks to its popularity on forums and projects alike, it is very hard to encounter an unsolvable problem with this module.
 HC05 connects to the microcontroller via UART communication. In order to establish data transfer with a microcontroller, it first needs to be set up using the UART protocol. To simplify the process, HC05 is outfitted with 6 pins: STATE, RX, TX, GND, VCC and ENABLE.
@@ -31,7 +31,7 @@ To enable communication between two HC05 modules, one must be set up as a master
 ![schematic](./HC05_Arduino.png "Schematic view of connections")
 
 
-##main.c
+## main.c
 ```C
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
@@ -82,14 +82,14 @@ int main(void)
 }
 ```
 
-##main.h
+## main.h
 ```C
 /* USER CODE BEGIN Includes */
 extern uint8_t rxData;
 /* USER CODE END Includes */
 ```
 
-##stm32f4xx_it.c
+## stm32f4xx_it.c
 ```C
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
