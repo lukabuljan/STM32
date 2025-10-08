@@ -29,3 +29,15 @@ To enable communication between two HC05 modules, one must be set up as a master
 ![Arduino IDE Serial Monitor](./HC05_MASTER_SLAVE.png "Arduino IDE Serial Monitor")
 
 ![schematic](./HC05_Arduino.png "Schematic view of connections")
+
+```C
+/* Includes ------------------------------------------------------------------*/
+#include "main.h"
+#include "usart.h"
+#include "gpio.h"
+
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
+#include "stm32f4xx_it.h"
+/* USER CODE END Includes */
+```
