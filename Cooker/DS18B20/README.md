@@ -37,6 +37,8 @@ void delay(uint8_t time)
 
 As shown in the datasheet, the reset pulse consists of pulling the data pin LOW for at least 480 microseconds, a brief pulse which raises the pin to HIGH, and immediate return to LOW forced by the sensor itself.
 
+![Reset Pulse](reset_pulse.png "Reset Pulse")
+
 Quote from the datasheet:
 
 **During the initialization sequence the bus master trans-
