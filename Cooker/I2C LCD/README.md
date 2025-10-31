@@ -3,7 +3,9 @@
 This LCD screen is a very popular choice for prototyping as it can act as an interface for displaying all kinds of messages.
 The version I am using in this project is outfitted with PCF8574, which drastically reduces wiring.
 
-It is crucial to understand how the two modules are connected. Below is the sketch visualizing the connections.
+It is crucial to understand how the two modules are connected. Below is the diagram showing the connections.
+
+![PCF8574 conected to LCD1602](pcf_lcd.png "PCF8574 conected to LCD1602")
 
 It is worth mentioning that the user can only input the higher data bits (D4-D7), and instead of the lower half can manipulate the RS and RW pins to determine the type and direction of data: 
 * RS: 0 = sending command, 1 = sending data
@@ -19,11 +21,18 @@ First step is to determine the address of the device itself - since the microcon
 * the purpose of device (read/write)
 * state of pins A2, A1 and A0
 
+![PCF8574 address bits](pcf_add.png "PCF8574 address bits")
+
 Since the device is used to write (send) data and pins are not soldered to the common ground by default, the address of the device is 0x4E.
 
 (graf PCF8574 adrese)
 
 ## Wake up call
+
+Using the diagram of the first chapter as refrence it is obvious that the lower 4 bits are actually used for sending commands to special pins of the LCD, unlike the upper half which is connected to data pins.
+Different types of 4-bit groups introduces an unneccessary confusion, which can be easily avoided by implementing functions such as the one below:
+
+
 
 The LCD1602 datasheet provides a detailed explanation of displaying characters on the screen. Before sending any data, the screen must be initialized following these steps:
 
