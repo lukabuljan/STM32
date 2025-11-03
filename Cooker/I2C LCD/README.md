@@ -32,7 +32,24 @@ Since the device is used to write (send) data and pins are not soldered to the c
 Using the diagram of the first chapter as refrence it is obvious that the lower 4 bits are actually used for sending commands to special pins of the LCD, unlike the upper half which is connected to data pins.
 Different types of 4-bit groups introduces an unneccessary confusion, which can be easily avoided by implementing functions such as the one below:
 
+```C
 
+void lcd_send_cmd(char cmd)
+{
+	char data_u, data_l;
+	uint8_t data[4];
+	data_u = (cmd & 0xF0);
+	data_l = ((cmd << 4) & 0xF0);
+	
+	data[0] = data_U | 0x0C; // EN=1, RS=0
+	data[1] = data_u | 0x08; // EN=0, RS=0
+	data[2] = data_l | 0x0C; // EN=1, RS=0
+	data[3] = data_l | 0x08; // EN=0, RS=0
+	
+	HAL_I2C_Transmit(&hi2c1, 0x4E, (uint8_t)* data, 4, 100);
+}
+
+```
 
 The LCD1602 datasheet provides a detailed explanation of displaying characters on the screen. Before sending any data, the screen must be initialized following these steps:
 
