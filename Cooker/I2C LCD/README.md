@@ -30,7 +30,12 @@ Since the device is used to write (send) data and pins are not soldered to the c
 ## Wake up call
 
 Using the diagram of the first chapter as refrence it is obvious that the lower 4 bits are actually used for sending commands to special pins of the LCD, unlike the upper half which is connected to data pins.
-Different types of 4-bit groups introduces an unneccessary confusion, which can be easily avoided by implementing functions such as the one below:
+Different types of 4-bit groups introduces an unneccessary confusion, which can be easily avoided by implementing a correct input order based on the time diagram.
+
+![LCD1602 time diagram](lcd_time_diagram.png "LCD1602 time diagram")
+
+The function above is based on the time diagram from the LCD1602 datasheet and the wiring shown in the diagram with PCF8754 and LCD1602 . It shows that pins bits RS and RW must have a set value before a short pulse is sent to the EN pin.
+The trigger for loading data bits is the falling edge of the EN pin.
 
 ```C
 
@@ -51,7 +56,7 @@ void lcd_send_cmd(char cmd)
 
 ```
 
-The LCD1602 datasheet provides a detailed explanation of displaying characters on the screen. Before sending any data, the screen must be initialized following these steps:
+The LCD1602 datasheet provides a detailed explanation of setting configuration on the screen. Before sending any data, the screen must be initialized following these steps:
 
 * send 0x30 three times: wait x miliseconds between 1st and 2nd time, and more than 100 microseconds between 2nd and 3rd time
 * set the device to 4-bit mode, enable both rows for displaying characters and adjust the font to 5x8 by sending 0x28
