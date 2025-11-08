@@ -114,3 +114,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 }
 /* USER CODE END 1 */
 ```
+
+![Character 'X' sent via USART](USART_X1.png "Character 'X' sent via USART")
+
+![Character 'O' sent via USART](USART_O1.png "Character 'O' sent via USART")
