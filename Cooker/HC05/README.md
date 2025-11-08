@@ -126,3 +126,5 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 ![Character 'X' sent via USART](USART_X1.png "Character 'X' sent via USART")
 
 ![Character 'O' sent via USART](USART_O1.png "Character 'O' sent via USART")
+
+Graphs above show the signal levels during USART communication. HIGH and LOW signal levels correspond to logical 1 and 0 of the characters sent. It is worth noting that the data is sent starting from least significant bit.
