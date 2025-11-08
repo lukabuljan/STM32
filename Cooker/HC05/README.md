@@ -108,7 +108,15 @@ extern uint8_t rxData;
 /* USER CODE BEGIN 1 */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, rxData);
+	if(rxData == 'X') //01011000
+	{
+		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, 1);
+	}
+	
+	if(rxData == 'O') //01001111
+	{
+		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, 0);
+	}
 
 	HAL_UART_Receive_IT(&huart1, &rxData, sizeof(rxData));
 }
