@@ -25,8 +25,6 @@ First step is to determine the address of the device itself - since the microcon
 
 Since the device is used to write (send) data and pins are not soldered to the common ground by default, the address of the device is 0x4E.
 
-(graf PCF8574 adrese)
-
 ## Wake up call
 
 Using the diagram of the first chapter as refrence it is obvious that the lower 4 bits are actually used for sending commands to special pins of the LCD, unlike the upper half which is connected to data pins.
@@ -56,6 +54,8 @@ void lcd_send_cmd(char cmd)
 
 ```
 
+The same procedure is required to send data bytes and its function is almost the same as the one shown above, with the exception of the RS bit. In case of data byte, it needs to be 1, which would change the appended part of the byte from 0x08 and 0x0C to 0x09 and 0x0D.
+
 The LCD1602 datasheet provides a detailed explanation of setting configuration on the screen. Before sending any data, the screen must be initialized following these steps:
 
 * send 0x30 three times: wait x miliseconds between 1st and 2nd time, and more than 100 microseconds between 2nd and 3rd time
@@ -64,3 +64,37 @@ The LCD1602 datasheet provides a detailed explanation of setting configuration o
 * clear the display with 0x01
 * set the entry mode parameters to incrementing cursor and no shift by sending 0x06
 * turn on the LCD by sending 0x08
+
+## Displaying text
+
+The LCD1602 has something called DDRAM. It is a special part of memory dedicated to storing letters. These values are sent to the CGROM (Character Generator ROM) to find the correct bitmap of the specified letter, which then gets displayed on the screen.
+The DDRAM Address for the LCD1602 starts from the 0x80, so If we tell LCD to put the cursor at 0x80, it will basically put it in the beginning of the Top Row. Then the next Position will be 0x81, 0x82 and so on, upto 0x8F.
+
+The beginning of the bottom row starts from 0xC0, and goes all the way upto 0xCF.
+
+```C
+void lcd_put_cur(row,col)
+{
+	if(row == 0){col |= 0x80;}
+	else if(row == 1){col |= 0xC0;}
+}
+```
+
+In case of sending a string, an iterating while loop can be used to repeatedly call the lcd_send_data() function:
+
+```C
+void send_string(char *string)
+{
+	while(*string){lcd_send_data(*string++);}
+}
+```
+
+A good screen also has the ability to display absolutely nothing. To achieve this, one can send 0x01 command as shown in the datasheet.
+
+```C
+void lcd_clear(void)
+{
+	lcd_send_cmd(0x01);
+	sleep(5);
+}
+```
