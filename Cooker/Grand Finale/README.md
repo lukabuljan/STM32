@@ -4,6 +4,10 @@ This is where the magic happens.
 
 ## Button interface
 
+The three buttons connected to the microcontroller are used to change values of two variables: sek_br stores the desired countdown time, while OK is used as a trigger to start the countdown.
+Mechanical buttons introduce the problem of bouncing. It is a rapid and unwanted switching between high and low voltage values and can be remedied programatically or electronically by introducing a parallel capacitor.
+In this project I solved the problem programatically by introducing an extra condition which checks if the current voltage level lasts longer than 10 milliseconds.
+
 ```C
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
@@ -31,6 +35,9 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 ```
 
 ## Timer
+
+After confirming the countdown value, TIM10 starts periodically decreasing the sek_br value as well as converting it to MM:SS format. When sek_br reaches zero, it sends a zero to the other microcontroller to terminate temperature transmission.
+All that is left is to display a string informing the user that the countdown completed successfully, as well as stopping the timer. 
 
 ```C
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
