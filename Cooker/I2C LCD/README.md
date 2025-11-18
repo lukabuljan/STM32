@@ -79,7 +79,7 @@ void lcd_init (void)
 	lcd_send_cmd (0x20);  // 4bit mode
 	HAL_Delay(10);
 
-	// dislay initialisation
+	// display initialisation
 	lcd_send_cmd (0x28); // Function set --> DL=0 (4 bit mode), N = 1 (2 line display) F = 0 (5x8 characters)
 	HAL_Delay(1);
 	lcd_send_cmd (0x08); //Display on/off control --> D=0,C=0, B=0  ---> display off
@@ -91,6 +91,10 @@ void lcd_init (void)
 	lcd_send_cmd (0x0C); //Display on/off control --> D = 1, C and B = 0. (Cursor and blink, last two bits)
 }
 ```
+
+The graph below shows how the command 0x30 is being sent to the LCD. Notice that the bytes are sent in groups of 4 bits paired with command bits, once with EN = 1 and second time with EN = 0 just like in the code.
+
+![0x30 timelapse](init_i2c.png "0x30 timelapse")
 
 ## Displaying text
 
@@ -115,6 +119,8 @@ void send_string(char *string)
 	while(*string){lcd_send_data(*string++);}
 }
 ```
+
+!["Hello" timelapse](hello_i2c.png "Hello timelapse")
 
 A good screen also has the ability to display absolutely nothing. To achieve this, one can send 0x01 command as shown in the datasheet.
 

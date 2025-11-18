@@ -5,6 +5,7 @@ This is where the magic happens.
 ## Button interface
 
 The three buttons connected to the microcontroller are used to change values of two variables: sek_br stores the desired countdown time, while OK is used as a trigger to start the countdown.
+
 Mechanical buttons introduce the problem of bouncing. It is a rapid and unwanted switching between high and low voltage values and can be remedied programatically or electronically by introducing a parallel capacitor.
 In this project I solved the problem programatically by introducing an extra condition which checks if the current voltage level lasts longer than 10 milliseconds.
 
