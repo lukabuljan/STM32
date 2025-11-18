@@ -5,6 +5,8 @@ The sensor is outfitted with three wires: red for VCC, black for GND and yellow 
 
 ![DS18B20](DS18B20.jpg "DS18B20 Sensor")
 
+![Schematic](STM32_Cooker2.png "Schematic")
+
 Datasheet of the DS18B20 sensor demonstrates how to receive the measured temperature:
 1. send reset pulse
 2. receive presence pulse from the sensor
