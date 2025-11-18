@@ -108,6 +108,8 @@ void lcd_put_cur(row,col)
 {
 	if(row == 0){col |= 0x80;}
 	else if(row == 1){col |= 0xC0;}
+	
+	lcd_send_cmd(col);
 }
 ```
 
@@ -119,6 +121,9 @@ void send_string(char *string)
 	while(*string){lcd_send_data(*string++);}
 }
 ```
+
+The screenshot below captures sending of string "00:10" to the LCD. One can find the beginning of these bytes by looking at the bytes which contain 0xD and 0x9 on their lower halves as this is the case only when data is sent.
+For example, character "0" in ASCII table is equal to 0x30 or 48 decimal, meaning bytes used to send this character are 0x3D, 0x39, 0x0D, 0x09. Similarly, character ":" (0x3A hex, 58 decimal) is sent with 0x3D, 0x39, 0xAD, 0xA9.
 
 !["Hello" timelapse](hello_i2c.png "Hello timelapse")
 
