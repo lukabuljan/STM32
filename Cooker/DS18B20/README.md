@@ -73,3 +73,108 @@ uint8_t DS18B20_Start(void)
 	return response;
 }
 ```
+
+## Write Data
+
+Writing data is done according to the datasheet:
+"A write time slot is initiated when the host pulls the data line from a high logic level to a low logic level. There are two types of write time slots: Write 1 time slots and Write 0 time slots.  All write time slots must be a minimum of 60 µs in duration with a minimum of a 1-µs recovery time between individual write cycles."
+
+```C
+void DS18B20_Write (uint8_t data)
+{
+	Set_Pin_Output(DS18B20_PORT, DS18B20_PIN);  // set as output
+
+	for (int i=0; i<8; i++)
+	{
+		if ((data & (1<<i))!=0)  // if the bit is high
+		{
+			// write 1
+			Set_Pin_Output(DS18B20_PORT, DS18B20_PIN);  // set as output
+			HAL_GPIO_WritePin (DS18B20_PORT, DS18B20_PIN, 0);  // pull the pin LOW
+			delay (1);  // wait for 1 us
+
+			Set_Pin_Input(DS18B20_PORT, DS18B20_PIN);  // set as input
+			delay (50);  // wait for 60 us
+		}
+
+		else  // if the bit is low
+		{
+			// write 0
+			Set_Pin_Output(DS18B20_PORT, DS18B20_PIN);
+			HAL_GPIO_WritePin (DS18B20_PORT, DS18B20_PIN, 0);  // pull the pin LOW
+			delay (50);  // wait for 60 us
+
+			Set_Pin_Input(DS18B20_PORT, DS18B20_PIN);
+		}
+	}
+}
+```
+
+## Read Data
+
+"The host generates read time slots when data is to be read from the DS18B20.  A read time slot is initiated when the host pulls the data line from a logic high level to logic low level.  The data line must remain at a low logic level for a minimum of 1 µs; output data from the DS18B20 is valid for 15 µs after the falling edge of the read time slot.  The host therefore must stop driving the DQ pin low in order to read its state 15 µs from the start of the read slot (see Figure 12).  By the end of the read time slot, the DQ pin will pull back high via the external pullup resistor.  All read time slots must be a minimum of 60 µs in duration with a minimum of a 1-µs recovery time between individual read slots."
+
+```C
+uint8_t DS18B20_Read (void)
+{
+	uint8_t value=0;
+	Set_Pin_Input(DS18B20_PORT, DS18B20_PIN);
+
+	for (int i=0;i<8;i++)
+	{
+		Set_Pin_Output(DS18B20_PORT, DS18B20_PIN);   // set as output
+		HAL_GPIO_WritePin (GPIOA, GPIO_PIN_1, 0);  // pull the data pin LOW
+		delay (2);  // wait for timeslot longer than 1 us
+		Set_Pin_Input(DS18B20_PORT, DS18B20_PIN);  // set as input
+		if (HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_1))  // if the pin is HIGH
+		{
+			value |= 1<<i;  // read = 1
+		}
+		delay (60);  // wait for 60 us
+	}
+	return value;
+}
+```
+
+## Main algorithm
+
+The "Transaction Sequence" chapter of the datasheet states that data exchange is always done in three steps: initialization, ROM Command and DS18B20 function.
+Initialization is done by calling the DS18B20_Start() function while the ROM Command and Ds18B20 function are realized with proper arguments in DS18B20_Write(function).
+Datasheet also provides an example of using a single sensor with all the neccessary steps:
+
+* Issue a reset pulse (initialize)
+* Send Skip ROM Command (0xCC)
+* Send Convert T Command (0x44)
+* Issue another reset pulse (initialize)
+* Send Skip ROM Command (0xCC)
+* Send Read Scratch-Pad Command (0xBE)
+
+After these steps the sensor sends a 9 data bytes, of which only the first two are stored into variables Temp_byte1 and Temp_byte2.
+Received bytes must be scaled with the resolution of the sensor, which is 0.0625 degrees per bit, requiring to scale the received value with 16.
+
+```C
+while (1)
+  {
+
+	Presence = DS18B20_Start ();
+	DS18B20_Write (0xCC);  // skip ROM in case of single sensor
+	DS18B20_Write (0x44);  // convert t
+
+	Presence = DS18B20_Start ();
+	DS18B20_Write (0xCC);  // skip ROM
+	DS18B20_Write (0xBE);  // Read Scratch-pad
+
+	Temp_byte1 = DS18B20_Read();
+	Temp_byte2 = DS18B20_Read();
+	TEMP = ((Temp_byte2<<8))|Temp_byte1;
+	temperature = (float)TEMP/16.0;  // resolution is 0.0625
+
+	HAL_Delay(1000);
+	Display_Temp(temperature);
+    /* USER CODE END WHILE */
+
+    /* USER CODE BEGIN 3 */
+  }
+  /* USER CODE END 3 */
+}
+```
